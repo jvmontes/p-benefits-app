@@ -15,34 +15,34 @@ export default function Home() {
 
   const [employee, setEmployee] = useState({});
 
-  var benefitsCost = 0;
-
-  function addEmployee(employee) {
-    console.log("adding employee " + JSON.stringify(employee));
-
-    setEmployee(employee);
-
-
-  }
-
-  function calculateBenefits(e) {
-    e.preventDefault();
-
-    var employeeCost = DEFAULT_EMPLOYEE_COST;
-    employeeCost = calculateDiscount(employee, employeeCost);
-
-    benefitsCost += employeeCost;
-    console.log("Benefits cost : " + benefitsCost);
-
+  function addEmployee(e) {
+    setEmployee(e);
   }
 
   function calculateDiscount(person, cost) {
-    if (person.firstName[0] === "A") {
-      console.log("applying A discount ");
-      return cost * 0.9;
-    } else {
-      return cost;
+    return (person.firstName[0] === "A" || person.firstName[0] === "a") ? cost * DISCOUNT_MULTIPLE : cost;
+  }
+
+  function calculateBenefits(event) {
+    event.preventDefault();
+  
+    let cost = 0;
+
+    if (employee.firstName !== undefined) {
+      console.log('employee ' + JSON.stringify(employee));
+      var calculatedEmployeeCost = calculateDiscount(employee, DEFAULT_EMPLOYEE_COST);
+      setEmployee({
+        firstName: employee.firstName,
+        lastName: employee.lastName,
+        cost: calculatedEmployeeCost
+      });
+      cost += calculatedEmployeeCost;
     }
+
+    // go through list of dependents
+    // add costs for those, as well. 
+
+    // return cost; set cost to some sort of state.
   }
 
   return (
@@ -84,7 +84,7 @@ export default function Home() {
 
             {employee.firstName ? (
               <div>
-                <p>Employee Name: {employee.firstName} {employee.lastName} Benefits Cost: {employeeCost} </p>
+                <p>Employee Name: {employee.firstName} {employee.lastName} Benefits Cost: {employee.cost} </p>
               </div>) : (
               <p>Benefits cost calculation will show here after employee info is entered.</p>
             )
@@ -95,9 +95,4 @@ export default function Home() {
       </main>
     </>
   )
-}
-
-function calculateBenefits(event) {
-  event.preventDefault();
-  console.log(event);
 }
