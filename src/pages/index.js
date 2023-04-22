@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
 import { useState } from 'react'
 import AddPerson from '@/Components/AddPerson'
+import { v4 as uuid } from 'uuid';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -20,7 +21,8 @@ export default function Home() {
   }
 
   function addDependent(d) {
-    d.key = `${d.firstName}_${d.lastName}`;
+    const unique_id = uuid();
+    d.key = unique_id.slice(0,8)
     setDependents([...dependents, d]);
   }
 
