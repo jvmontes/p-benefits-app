@@ -15,6 +15,7 @@ export default function Home() {
 
   const [employee, setEmployee] = useState({});
   const [dependents, setDependents] = useState([]);
+  const [totalCost, setTotalCost] = useState(0);
 
   function addEmployee(e) {
     setEmployee(e);
@@ -33,7 +34,7 @@ export default function Home() {
   function calculateBenefits(event) {
     event.preventDefault();
 
-    let cost = 0;
+    setTotalCost(0);
 
     if (employee.firstName !== undefined) {
       var calculatedEmployeeCost = calculateDiscount(employee, DEFAULT_EMPLOYEE_COST);
@@ -42,14 +43,16 @@ export default function Home() {
         lastName: employee.lastName,
         cost: calculatedEmployeeCost
       });
-      cost += calculatedEmployeeCost;
+      setTotalCost(prevTotalCost => prevTotalCost + calculatedEmployeeCost);
     }
 
-    console.log("dependents " + JSON.stringify(dependents));
-    // go through list of dependents
-    // add costs for those, as well. 
-
-    // return cost; set cost to some sort of state.
+    setDependents(
+      dependents.map((dependent) => {
+        var calculatedDependentCost = calculateDiscount(dependent, DEFAULT_DEPENDENT_COST);
+        setTotalCost(prevTotalCost => prevTotalCost + calculatedDependentCost);
+        return {...dependent, cost: calculatedDependentCost};
+      })
+    )
   }
 
   return (
@@ -95,13 +98,14 @@ export default function Home() {
             {employee.firstName ?
               (
                 <div>
+                  <p>Total Cost: {totalCost}</p>
                   <p>Employee Name: {employee.firstName} {employee.lastName} {employee.cost && (<span>Benefits Cost: {employee.cost}</span>)}</p>
                   {
                     dependents.length > 0 && 
                     (
                       <>
                       {dependents.map((dependent) => (
-                        <p key={dependent.key}>Dependent Name: {dependent.firstName} {dependent.lastName} </p>
+                        <p key={dependent.key}>Dependent Name: {dependent.firstName} {dependent.lastName} {dependent.cost && (<span>Benefits Cost: {dependent.cost}</span>)} </p>
                       ))}
                       </>
                     )
