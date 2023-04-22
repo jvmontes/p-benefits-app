@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-const AddEmployee = ({ onAddEmployee }) => {
+const AddPerson = ({ onAddPerson, actionButtonText }) => {
 
 	const [firstName, setFirstName] = useState('');
 	const [lastName, setLastName] = useState('');
@@ -16,7 +16,7 @@ const AddEmployee = ({ onAddEmployee }) => {
 			return;
 		}
 
-		onAddEmployee({ firstName, lastName });
+		onAddPerson({ firstName, lastName });
 
 		setFirstName('');
 		setLastName('');
@@ -39,9 +39,9 @@ const AddEmployee = ({ onAddEmployee }) => {
 					onChange={(e) => setLastName(e.target.value)} ></input>
 			</div>
 
-			<input type='submit' value='Submit Employee'></input>
+			<input type='submit' value={actionButtonText}></input>
 		</form>
 	)
 }
 
-export default AddEmployee
+export default AddPerson

@@ -1,9 +1,8 @@
 import Head from 'next/head'
-import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
 import { useState } from 'react'
-import AddEmployee from '@/Components/AddEmployee'
+import AddPerson from '@/Components/AddPerson'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -14,9 +13,15 @@ const DISCOUNT_MULTIPLE = 0.9
 export default function Home() {
 
   const [employee, setEmployee] = useState({});
+  const [dependents, setDependents] = useState([]);
 
   function addEmployee(e) {
     setEmployee(e);
+  }
+
+  function addDependent(d) {
+    d.key = `${d.firstName}_${d.lastName}`;
+    setDependents([...dependents, d]);
   }
 
   function calculateDiscount(person, cost) {
@@ -25,11 +30,10 @@ export default function Home() {
 
   function calculateBenefits(event) {
     event.preventDefault();
-  
+
     let cost = 0;
 
     if (employee.firstName !== undefined) {
-      console.log('employee ' + JSON.stringify(employee));
       var calculatedEmployeeCost = calculateDiscount(employee, DEFAULT_EMPLOYEE_COST);
       setEmployee({
         firstName: employee.firstName,
@@ -39,6 +43,7 @@ export default function Home() {
       cost += calculatedEmployeeCost;
     }
 
+    console.log("dependents " + JSON.stringify(dependents));
     // go through list of dependents
     // add costs for those, as well. 
 
@@ -62,32 +67,47 @@ export default function Home() {
 
         <div className={styles.container}>
           <div className={styles.content}>
-            <h2>Employee Information</h2>
-            <p>Please use the following form to enter employee information.</p>
+            <div>
+              <h2>Employee Information</h2>
+              <p>Please use the following form to enter employee information.</p>
+              <AddPerson onAddPerson={addEmployee} actionButtonText="Add Employee"></AddPerson>
+            </div>
 
-            <AddEmployee onAddEmployee={addEmployee}></AddEmployee>
+            <div>
+              <h2>Dependent Information</h2>
+              <p>Please use the following form to enter any optional dependents.</p>
+              <AddPerson onAddPerson={addDependent} actionButtonText="Add Dependent"></AddPerson>
+            </div>
 
             <form>
               <div>
                 <button onClick={calculateBenefits}>Calculate Benefits</button>
               </div>
             </form>
-            <div>
-              <h2>Dependent Information</h2>
-              <p>Please use the following form to enter any optional dependents.</p>
 
-            </div>
           </div>
 
           <div className={styles.content}>
             <h2>Benefits Cost</h2>
 
-            {employee.firstName ? (
-              <div>
-                <p>Employee Name: {employee.firstName} {employee.lastName} Benefits Cost: {employee.cost} </p>
-              </div>) : (
-              <p>Benefits cost calculation will show here after employee info is entered.</p>
-            )
+            {employee.firstName ?
+              (
+                <div>
+                  <p>Employee Name: {employee.firstName} {employee.lastName} {employee.cost && (<span>Benefits Cost: {employee.cost}</span>)}</p>
+                  {
+                    dependents.length > 0 && 
+                    (
+                      <>
+                      {dependents.map((dependent) => (
+                        <p key={dependent.key}>Dependent Name: {dependent.firstName} {dependent.lastName} </p>
+                      ))}
+                      </>
+                    )
+                  }
+                </div>) :
+              (
+                <p>Benefits cost calculation will show here after employee info is entered.</p>
+              )
             }
           </div>
         </div>
