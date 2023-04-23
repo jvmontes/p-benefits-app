@@ -23,7 +23,7 @@ export default function Home() {
 
   function addDependent(d) {
     const unique_id = uuid();
-    d.key = unique_id.slice(0,8)
+    d.key = unique_id.slice(0, 8)
     setDependents([...dependents, d]);
   }
 
@@ -50,7 +50,7 @@ export default function Home() {
       dependents.map((dependent) => {
         var calculatedDependentCost = calculateDiscount(dependent, DEFAULT_DEPENDENT_COST);
         setTotalCost(prevTotalCost => prevTotalCost + calculatedDependentCost);
-        return {...dependent, cost: calculatedDependentCost};
+        return { ...dependent, cost: calculatedDependentCost };
       })
     )
   }
@@ -84,12 +84,6 @@ export default function Home() {
               <AddPerson onAddPerson={addDependent} actionButtonText="Add Dependent"></AddPerson>
             </div>
 
-            <form>
-              <div>
-                <button onClick={calculateBenefits}>Calculate Benefits</button>
-              </div>
-            </form>
-
           </div>
 
           <div className={styles.content}>
@@ -98,18 +92,23 @@ export default function Home() {
             {employee.firstName ?
               (
                 <div>
-                  <p>Total Cost: {totalCost}</p>
+                  {employee.cost > 0 && (<p>Total Cost: {totalCost}</p>)}
                   <p>Employee Name: {employee.firstName} {employee.lastName} {employee.cost && (<span>Benefits Cost: {employee.cost}</span>)}</p>
                   {
-                    dependents.length > 0 && 
+                    dependents.length > 0 &&
                     (
                       <>
-                      {dependents.map((dependent) => (
-                        <p key={dependent.key}>Dependent Name: {dependent.firstName} {dependent.lastName} {dependent.cost && (<span>Benefits Cost: {dependent.cost}</span>)} </p>
-                      ))}
+                        {dependents.map((dependent) => (
+                          <p key={dependent.key}>Dependent Name: {dependent.firstName} {dependent.lastName} {dependent.cost && (<span>Benefits Cost: {dependent.cost}</span>)} </p>
+                        ))}
                       </>
                     )
                   }
+                  <form>
+                    <div>
+                      <button onClick={calculateBenefits}>Calculate Benefits</button>
+                    </div>
+                  </form>
                 </div>) :
               (
                 <p>Benefits cost calculation will show here after employee info is entered.</p>
