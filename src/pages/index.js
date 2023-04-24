@@ -23,6 +23,13 @@ export default function Home() {
     currency: 'USD',
   });
 
+  const onClearInfo = (e) => {
+    e.preventDefault();
+    setTotalCost(0);
+    setEmployee({});
+    setDependents([]);
+  }
+
   function addEmployee(e) {
     var calculatedEmployeeCost = calculateDiscount(e, DEFAULT_EMPLOYEE_COST);
     setEmployee({
@@ -161,6 +168,12 @@ export default function Home() {
                       </div>
                     )
                   }
+                  <form>
+                    <div>
+                      <button className={styles.redButton} onClick={onClearInfo}>Clear Info</button>
+                    </div>
+                  </form>
+
                 </div>) :
               (
                 <p>A detailed compensation overview will show here after employee info is entered.</p>
