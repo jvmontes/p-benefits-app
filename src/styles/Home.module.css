@@ -33,7 +33,7 @@
 
 .content {
   margin: 1rem;
-  min-width: 280px;
+  width: 30%;
 }
 
 .description {
@@ -137,7 +137,7 @@
   position: relative;
 }
 
-.personCard {
+.resultsCard {
   display: flex;
   justify-content: space-between;
 

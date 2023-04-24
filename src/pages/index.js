@@ -8,12 +8,15 @@ import { FaMinusSquare } from 'react-icons/fa'
 const DEFAULT_EMPLOYEE_COST = 1000;
 const DEFAULT_DEPENDENT_COST = 500;
 const DISCOUNT_MULTIPLE = 0.9
+const EMPLOYEE_PAY_PER_PAYCHECK = 2000;
+const EMPLOYEE_PAYCHECKS_PER_YEAR = 26;
 
 export default function Home() {
 
   const [employee, setEmployee] = useState({});
   const [dependents, setDependents] = useState([]);
   const [totalCost, setTotalCost] = useState(0);
+  const grossAnnualPay = (EMPLOYEE_PAY_PER_PAYCHECK * EMPLOYEE_PAYCHECKS_PER_YEAR) - totalCost;
 
   const formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
@@ -97,18 +100,37 @@ export default function Home() {
           </div>
 
           <div className={styles.content}>
-            <h2>Benefits Cost</h2>
+            <h2>Compensation Overview</h2>
             {employee.firstName ?
               (
                 <div>
-                  <p>Total Cost: {formatter.format(totalCost)}</p>
+                  <div className={styles.resultsCard}>
+                    <div>Net Annual Pay:</div>
+                    <div>{formatter.format(EMPLOYEE_PAY_PER_PAYCHECK * EMPLOYEE_PAYCHECKS_PER_YEAR)}</div>
+                  </div>
+                  <div className={styles.resultsCard}>
+                    <div>Total Annual Benefits Deduction:</div>
+                    <div>{formatter.format(totalCost)}</div>
+                  </div>
+                  <div className={styles.resultsCard}>
+                    <div>Gross Annual Pay:</div>
+                    <div>{formatter.format(grossAnnualPay)}</div>
+                  </div>
+                  <div className={styles.resultsCard}>
+                    <div>Gross Paycheck Amount:</div>
+                    <div>{formatter.format(grossAnnualPay / EMPLOYEE_PAYCHECKS_PER_YEAR)}</div>
+                  </div>
+                  <div className={styles.resultsCard}>
+                    <div>Paycheck Deduction Amount:</div>
+                    <div>{formatter.format(EMPLOYEE_PAY_PER_PAYCHECK - (grossAnnualPay / EMPLOYEE_PAYCHECKS_PER_YEAR))}</div>
+                  </div>
                   <div>
                     <h3>Employee Info</h3>
-                    <div className={styles.personCard}>
+                    <div className={styles.resultsCard}>
                       <div><em><u>Name</u></em></div>
-                      <div><em><u>Cost</u></em></div>
+                      <div><em><u>Annual Deduction</u></em></div>
                     </div>
-                    <div className={styles.personCard}>
+                    <div className={styles.resultsCard}>
                       <div>
                         {truncateIfNecessary(employee.firstName)} {truncateIfNecessary(employee.lastName)}
                       </div>
@@ -121,12 +143,12 @@ export default function Home() {
                     (
                       <div>
                         <h3>Dependent(s) Info</h3>
-                        <div className={styles.personCard}>
+                        <div className={styles.resultsCard}>
                           <div><em><u>Name</u></em></div>
-                          <div><em><u>Cost</u></em></div>
+                          <div><em><u>Annual Deduction</u></em></div>
                         </div>
                         {dependents.map((dependent) => (
-                          <div key={dependent.key} className={styles.personCard}>
+                          <div key={dependent.key} className={styles.resultsCard}>
                             <div>
                               <FaMinusSquare style={{ color: 'red', cursor: 'pointer' }}
                                 onClick={() => onRemoveDependent(dependent.key)}></FaMinusSquare>
@@ -141,7 +163,7 @@ export default function Home() {
                   }
                 </div>) :
               (
-                <p>Benefits cost calculation will show here after employee info is entered.</p>
+                <p>A detailed compensation overview will show here after employee info is entered.</p>
               )
             }
           </div>
