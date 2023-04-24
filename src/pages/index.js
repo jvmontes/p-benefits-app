@@ -93,20 +93,44 @@ export default function Home() {
               (
                 <div>
                   {employee.cost > 0 && (<p>Total Cost: {totalCost}</p>)}
-                  <p>Employee Name: {employee.firstName} {employee.lastName} {employee.cost && (<span>Benefits Cost: {employee.cost}</span>)}</p>
+                  <div>
+                    <h3>Employee Info</h3>
+                    <div className={styles.personCard}>
+                      <div><em><u>Name</u></em></div>
+                      <div><em><u>Cost</u></em></div>
+                    </div>
+                    <div className={styles.personCard}>
+                      <div>
+                        {employee.firstName} {employee.lastName}
+                      </div>
+                      {employee.cost && (<div>{employee.cost}</div>)}
+                    </div>
+                  </div>
+
                   {
                     dependents.length > 0 &&
                     (
-                      <>
+                      <div>
+                        <h3>Dependent(s) Info</h3>
+                        <div className={styles.personCard}>
+                          <div><em><u>Name</u></em></div>
+                          <div><em><u>Cost</u></em></div>
+                        </div>
                         {dependents.map((dependent) => (
-                          <p key={dependent.key}>Dependent Name: {dependent.firstName} {dependent.lastName} {dependent.cost && (<span>Benefits Cost: {dependent.cost}</span>)} </p>
+                          <div key={dependent.key} className={styles.personCard}>
+                            <div>
+                              {dependent.firstName} {dependent.lastName}
+                            </div>
+                            {dependent.cost && (<div>{dependent.cost}</div>)}
+                          </div>
+
                         ))}
-                      </>
+                      </div>
                     )
                   }
                   <form>
                     <div>
-                      <button onClick={calculateBenefits}>Calculate Benefits</button>
+                      <button className={styles.button} onClick={calculateBenefits}>Calculate Benefits</button>
                     </div>
                   </form>
                 </div>) :

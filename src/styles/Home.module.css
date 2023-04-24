@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito Sans:wght@300;400;900&display=swap');
+
 .main {
   padding: 3rem;
   min-height: 100vh;
@@ -10,6 +12,20 @@
   margin-bottom: 1rem;
 }
 
+.button {
+  display: inline-block;
+  background: #fd6311;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  margin: 8px;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 16px;
+  font-family: inherit;
+}
+
 .container {
   display: flex;
   justify-content: space-around;
@@ -17,7 +33,7 @@
 
 .content {
   margin: 1rem;
-  max-width: 520px;
+  min-width: 280px;
 }
 
 .description {
@@ -120,6 +136,15 @@
 .logo {
   position: relative;
 }
+
+.personCard {
+  display: flex;
+  justify-content: space-between;
+
+  padding: 0.5rem 0.5rem;
+  min-width: 220px;
+}
+
 /* Enable hover only on non-touch devices */
 @media (hover: hover) and (pointer: fine) {
   .card:hover {

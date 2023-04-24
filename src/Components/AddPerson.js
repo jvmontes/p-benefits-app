@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import styles from '@/styles/Home.module.css'
 
 const AddPerson = ({ onAddPerson, actionButtonText }) => {
 
@@ -25,21 +26,23 @@ const AddPerson = ({ onAddPerson, actionButtonText }) => {
 	return (
 		<form onSubmit={onSubmit}>
 			<div>
-				<label>First Name</label>
-				<input type='text'
-					placeholder='First Name'
-					value={firstName}
-					onChange={(e) => setFirstName(e.target.value)} ></input>
-			</div>
-			<div>
-				<label>Last Name</label>
-				<input type='text'
-					placeholder='Last Name'
-					value={lastName}
-					onChange={(e) => setLastName(e.target.value)} ></input>
+				<div>
+					<label>First Name</label>
+					<input type='text'
+						placeholder='First Name'
+						value={firstName}
+						onChange={(e) => setFirstName(e.target.value)} ></input>
+				</div>
+				<div>
+					<label>Last Name</label>
+					<input type='text'
+						placeholder='Last Name'
+						value={lastName}
+						onChange={(e) => setLastName(e.target.value)} ></input>
+				</div>
 			</div>
 
-			<input type='submit' value={actionButtonText}></input>
+			<input className={styles.button} type='submit' value={actionButtonText}></input>
 		</form>
 	)
 }
