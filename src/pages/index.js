@@ -31,6 +31,10 @@ export default function Home() {
   }
 
   function addEmployee(e) {
+    if (employee.cost !== undefined) {
+      setTotalCost(prevTotalCost => prevTotalCost - employee.cost);
+    }
+
     var calculatedEmployeeCost = calculateDiscount(e, DEFAULT_EMPLOYEE_COST);
     setEmployee({
       firstName: e.firstName,
@@ -38,11 +42,7 @@ export default function Home() {
       cost: calculatedEmployeeCost
     });
 
-    setTotalCost(0);
     setTotalCost(prevTotalCost => prevTotalCost + calculatedEmployeeCost);
-    dependents.map((dependent) => {
-      setTotalCost(prevTotalCost => prevTotalCost + dependent.cost);
-    })
   }
 
   function addDependent(d) {
